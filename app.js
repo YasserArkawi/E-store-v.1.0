@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.use("/store/category",require("./routes/CategoryRouter"));
 app.use("/store/user",require("./routes/UserRouter"));
+app.use("/store/product",require("./routes/ProductRouter"));
 
 
 
