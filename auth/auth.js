@@ -55,7 +55,6 @@ const jwtMiddleware = (req, res, next) => {
     });
   } else {
     res.status(401).send({ error: "Unauthorized" });
-    next();
   }
 };
 

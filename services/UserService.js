@@ -10,6 +10,19 @@ const connection = mysql.createConnection({
 });
 
 class UserService {
+  static async geAlltUsers() {
+    try {
+      const results = new Promise((resolve, reject) => {
+        const query = "SELECT * FROM user ";
+        connection.query(query, [], (err, results) => {
+          if (err) reject(new Error(err));
+          resolve(results);
+        });
+      });
+      return results;
+    } catch (error) {}
+  }
+
   static async getUserById(id) {
     try {
       const result = new Promise((resolve, reject) => {
@@ -24,7 +37,6 @@ class UserService {
   }
 
   static async registerUser(data) {
-    try {
       // const user_id = data.user_id;
       const f_name = data.f_name;
       const image = data.image;
@@ -32,15 +44,13 @@ class UserService {
       const password = data.password;
       data.phone.toString();
       const phone = data.phone;
-      // phone.toString();
-      console.log(phone);
-      const is_admin = data.is_admin;
+      // const is_admin = data.is_admin;
       const result = await new Promise((resolve, reject) => {
         const query =
-          "INSERT INTO user (f_name,image,email,password,phone,is_admin) VALUES (?,?,?,?,?,?)";
+          "INSERT INTO user (f_name,image,email,password,phone) VALUES (?,?,?,?,?)";
         connection.query(
           query,
-          [f_name, image, email, password, phone, is_admin],
+          [f_name, image, email, password, phone],
           (err, result) => {
             if (err) reject(Error(err));
             resolve(result);
@@ -48,7 +58,6 @@ class UserService {
         );
       });
       return result;
-    } catch (error) {}
   }
 
   static async loginUser(data) {
@@ -56,7 +65,7 @@ class UserService {
       const email = data.email;
       const password = data.password;
       let erro = new Error();
-      const result = new Promise((resolve, reject) => {
+      const result = await new Promise((resolve, reject) => {
         const query = "SELECT * FROM user WHERE email = ?";
         connection.query(query, [email], (err, result) => {
           console.log(result);

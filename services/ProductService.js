@@ -1,6 +1,4 @@
 const mysql = require("mysql2");
-const { DOUBLE } = require("sequelize");
-
 const connection = mysql.createConnection({
   user: process.env.USER,
   host: process.env.HOST,
@@ -34,7 +32,9 @@ class ProductService {
             +availables,
           ],
           (err, result) => {
-            if (err) reject(new Error(err));
+            if (err) {
+              reject(new Error(err));
+            }
             resolve(result);
           }
         );
@@ -48,7 +48,6 @@ class ProductService {
       const results = await new Promise((resolve, reject) => {
         const query = "SELECT * FROM product";
         connection.query(query, [], (err, results) => {
-          console.log(results);
           if (err) reject(new Error(err));
           resolve(results);
         });
@@ -75,8 +74,6 @@ class ProductService {
       const results = await new Promise((resolve, reject) => {
         const query = "SELECT * FROM product WHERE category_id = ?";
         connection.query(query, [+id], (err, results) => {
-          console.log(results);
-
           if (err) reject(new Error(err));
           resolve(results);
         });
@@ -112,8 +109,6 @@ class ProductService {
           ],
           (err, result) => {
             if (err) reject(new Error(err));
-            console.log(result);
-
             resolve(result);
           }
         );
@@ -124,16 +119,26 @@ class ProductService {
 
   static async deleteProduct(id) {
     try {
-      const results = await new Promise((resolve, reject) => {
+      const result = await new Promise((resolve, reject) => {
         const query = "DELETE FROM product WHERE product_id = ?";
         connection.query(query, [+id], (err, results) => {
           if (err) reject(new Error(err));
           if (results.affectedRows === 0) {
             resolve("Already deleted");
           }
-          console.log(results);
-
           resolve(id);
+        });
+      });
+      return result;
+    } catch (error) {}
+  }
+
+  static async getMostRatedProducts() {
+    try {
+      const results = new Promise((resolve, reject) => {
+        const query = "SELECT * FROM product ORDER BY rating DESC LIMIT 10";
+        connection.query(query, [], (err, results) => {
+          if (err) reject(err);
         });
       });
       return results;

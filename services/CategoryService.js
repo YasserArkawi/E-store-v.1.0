@@ -71,15 +71,15 @@ class CategoryService {
         const query = "DELETE FROM category WHERE category_id = ?";
         connection.query(query, [+id], (err, result) => {
           if (err) reject(new Error(err));
-          console.log(err);
-          
+          if (result.affectedRows === 0) {
+            resolve("Already deleted");
+          }
           resolve(result);
         });
       });
-      return "deleted";
+      return result;
     } catch (error) {}
   }
-
 }
 
 module.exports = CategoryService;

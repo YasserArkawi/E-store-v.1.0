@@ -5,10 +5,14 @@ const {
   addProduct,
   editProduct,
   deleteProduct,
+  getMostRatedProducts,
+  getProductById
 } = require("../controllers/ProductController");
 const { jwtMiddleware } = require("../auth/auth");
 
 router.get("/", getAllProducts);
+router.get("/:id", getProductById);
+router.get("/mostRated", getMostRatedProducts);
 
 router.use(jwtMiddleware);
 
