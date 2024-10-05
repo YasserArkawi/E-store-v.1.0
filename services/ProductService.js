@@ -8,41 +8,6 @@ const connection = mysql.createConnection({
 });
 
 class ProductService {
-  static async addProduct(data) {
-    try {
-      const category_id = data.category_id;
-      const title = data.title;
-      const descreption = data.descreption;
-      const price = data.price;
-      const availables = data.availables;
-      const image = data.image || null;
-      const rating = data.rating || null;
-      const result = await new Promise((resolve, reject) => {
-        const query =
-          "INSERT INTO product (category_id,image,title,descreption,rating,price,availables) VALUES (?,?,?,?,?,?,?)";
-        connection.query(
-          query,
-          [
-            +category_id,
-            image,
-            title,
-            descreption,
-            +rating,
-            +price,
-            +availables,
-          ],
-          (err, result) => {
-            if (err) {
-              reject(new Error(err));
-            }
-            resolve(result);
-          }
-        );
-      });
-      return result;
-    } catch (error) {}
-  }
-
   static async getAllProducts() {
     try {
       const results = await new Promise((resolve, reject) => {
@@ -79,6 +44,41 @@ class ProductService {
         });
       });
       return results;
+    } catch (error) {}
+  }
+
+  static async addProduct(data) {
+    try {
+      const category_id = data.category_id;
+      const title = data.title;
+      const descreption = data.descreption;
+      const price = data.price;
+      const availables = data.availables;
+      const image = data.image || null;
+      const rating = data.rating || null;
+      const result = await new Promise((resolve, reject) => {
+        const query =
+          "INSERT INTO product (category_id,image,title,descreption,rating,price,availables) VALUES (?,?,?,?,?,?,?)";
+        connection.query(
+          query,
+          [
+            +category_id,
+            image,
+            title,
+            descreption,
+            rating,
+            +price,
+            +availables,
+          ],
+          (err, result) => {
+            if (err) {
+              reject(new Error(err));
+            }
+            resolve(result);
+          }
+        );
+      });
+      return result;
     } catch (error) {}
   }
 

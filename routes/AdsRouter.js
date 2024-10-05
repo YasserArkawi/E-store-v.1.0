@@ -1,22 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const {
-  makeNewOrder,
-  getAllOrders,
-  getOrdersByUserId,
-  deleteOrder,
-} = require("../controllers/OrderController");
 const { jwtMiddleware } = require("../auth/auth");
 const { managerValidation } = require("../middlewares/ManagerValidation");
+const {
+  addAd,
+  getAllAds,
+  deleteAd,
+  updateAd,
+  getAdById,
+} = require("../controllers/AdsController");
 
 router.use(jwtMiddleware);
 
-router.post("/", makeNewOrder);
-router.get("/byUser", getOrdersByUserId);
-router.delete("/", deleteOrder);
+router.get("/", getAllAds);
+router.get("/:id", getAdById);
 
 router.use(managerValidation);
 
-router.get("/", getAllOrders);
+router.post("/", addAd);
+router.delete("/:id", deleteAd);
+router.put("/:id", updateAd);
 
 module.exports = router;

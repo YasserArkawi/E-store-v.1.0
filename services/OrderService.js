@@ -1,5 +1,4 @@
 const mysql = require("mysql2");
-const { deleteOrder } = require("../controllers/OrderController");
 const connection = mysql.createConnection({
   user: process.env.USER,
   host: process.env.HOST,
@@ -17,7 +16,6 @@ class OrderService {
     try {
       const user_id = data.user_id;
       const products = data.products;
-      
 
       const availablityChecks = products.map((product) => {
         return new Promise((resolve, reject) => {
@@ -35,8 +33,6 @@ class OrderService {
       });
 
       const availables = await Promise.all(availablityChecks);
-      console.log(availables);
-      
 
       let total = 0;
       let i = 0;
